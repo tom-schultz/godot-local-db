@@ -20,11 +20,19 @@ static func read_key(key: String):
 static func write_key(key: String, value):
 	_initialize()
 	_data[key] = value
+	_write_save()
+
+static func delete_key(key: String):
+	_initialize()
+	_data.erase(key)
+	_write_save()
+
+static func _write_save():
 	var json = JSON.stringify(_data)
 	
 	assert(json != null,
-			"Could not serialize _data to JSON when adding { %s : %s }\n_data: %s" \
-			% [key, value, _data])
+			"Could not serialize _data to JSON!\n_data: %s" \
+			% [_data])
 	
 	var db_file = FileAccess.open(db_path, FileAccess.WRITE)
 	db_file.store_string(json)
